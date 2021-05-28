@@ -1,4 +1,5 @@
 from math import gcd
+import time
 import numpy as np
 
 CHARACTER = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
@@ -8,7 +9,6 @@ CHARACTER = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
             '6', '7', '8', '9', '.']
 
 MOD = 37
-
 class HillCipher:
 
     def __init__(self, size, plaintext, ciphertext):
@@ -78,6 +78,7 @@ class Improve(HillCipher):
         return check_K1 & check_K2
 
     def encrypt(self):
+        start = time.time()
         list_ciphertext_block = []
         list_plaintext_block = self.divide_text(self.plaintext)
 
@@ -103,7 +104,11 @@ class Improve(HillCipher):
             for row in block:
                 self.ciphertext += CHARACTER[row[0]].upper()
         
+        end = time.time()
+        return end - start
+        
     def decrypt(self):
+        start = time.time()
         list_plaintext_block = []
         list_ciphertext_block = self.divide_text(self.ciphertext)
         iK1 = self.inverse_key(self.K1)
@@ -130,6 +135,9 @@ class Improve(HillCipher):
             for row in block:
                 self.plaintext += CHARACTER[int(row[0])]
 
+        end = time.time()
+        return end - start
+
 class Classical(HillCipher):
 
     def __init__(self, K, size, plaintext, ciphertext):
@@ -145,6 +153,7 @@ class Classical(HillCipher):
         return check
 
     def encrypt(self):
+        start = time.time()
         list_plaintext_block = self.divide_text(self.plaintext)
         list_ciphertext_block = []
 
@@ -156,7 +165,11 @@ class Classical(HillCipher):
             for row in block:
                 self.ciphertext += CHARACTER[row[0]].upper()
 
+        end = time.time()
+        return end - start
+
     def decrypt(self):
+        start = time.time()
         list_plaintext_block = []
         list_ciphertext_block = self.divide_text(self.ciphertext)
         iK = self.inverse_key(self.K)
@@ -169,6 +182,9 @@ class Classical(HillCipher):
             for row in block:
                 self.plaintext += CHARACTER[int(row[0])].lower()
 
+        end = time.time()
+        return end - start
+
 #example improve
 k1 = np.array([[1,2,3],[3,5,5],[4,5,6]])
 k2 = np.array([[0,1,2],[3,4,0],[0,0,1]])
@@ -177,13 +193,14 @@ size = 3
 plaintext1 = "huyne"
 ciphertext1 = ""
 encrypt_improve = Improve(k1,k2,size,plaintext1,ciphertext1)
-encrypt_improve.encrypt()
+time_encrypt_improve = encrypt_improve.encrypt()
+print(time_encrypt_improve)
 print("Encrypt Improve: " + encrypt_improve.ciphertext)
 #decrypt improve 
 plaintext2 = ""
 ciphertext2 = "L0O1R4"
 decrypt_improve = Improve(k1,k2,size,plaintext2,ciphertext2)
-decrypt_improve.decrypt()
+time_decrypt_improve = decrypt_improve.decrypt()
 print("Decrypt Improve: " + decrypt_improve.plaintext)
 
 #example classical
@@ -193,11 +210,11 @@ size = 3
 plaintext3 = "huyne"
 ciphertext3 = ""
 encrypt_classical = Classical(k,size,plaintext3,ciphertext3)
-encrypt_classical.encrypt()
+time_encrypt_classical = encrypt_classical.encrypt()
 print("Encrypt Classical: " + encrypt_classical.ciphertext)
 #Decrypt classical
 plaintext4 = ""
 ciphertext4 = "ITNSR3"
 decrypt_classical = Classical(k,size,plaintext4,ciphertext4)
-decrypt_classical.decrypt()
+time_decrypt_classical = decrypt_classical.decrypt()
 print("Decrypt Improve: " + decrypt_classical.plaintext)
