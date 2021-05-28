@@ -47,6 +47,8 @@ class HillCipher:
         dK = int(np.linalg.det(K))
         idK = pow(dK,-1,MOD)
         Pk = dK*np.linalg.inv(K)
+        Pk = np.around(Pk)
+        Pk = Pk.astype(int)
         for i in range(len(Pk)):
             for j in range(len(Pk[i])):
                 if Pk[i][j] < 0:
@@ -62,11 +64,14 @@ class Improve(HillCipher):
         self.K2 = K2
 
     def check_key(self):
-        if gcd(np.linalg.det(self.K1), MOD) == 1: 
+        det_K1 = np.linalg.det(self.K1)
+        det_K2 = np.linalg.det(self.K2)
+
+        if det_K1 != 0 and gcd(det_K1, MOD) == 1: 
             check_K1 = True 
         else:
             check_K1 = False
-        if gcd(np.linalg.det(self.K2), MOD) == 1:
+        if det_K2 != 0 and gcd(det_K2, MOD) == 1:
             check_K2 = True
         else:
             check_K2 = False
@@ -79,8 +84,6 @@ class Improve(HillCipher):
         for i in range(len(list_plaintext_block)):
             block = list_plaintext_block[i]
             C1 = ((self.K1).dot(block)) % MOD
-
-            print(C1)
             
             C2 = []
             K2_pow = np.linalg.matrix_power(self.K2, i+1)
@@ -93,9 +96,7 @@ class Improve(HillCipher):
                 C2_row.append(r)
                 C2.append(C2_row)
 
-            print(C2)    
             C3 = (C1 + C2) % MOD
-            print(C3)
             list_ciphertext_block.append(C3)
         
         for block in list_ciphertext_block:
@@ -136,7 +137,8 @@ class Classical(HillCipher):
         self.K = K
 
     def check_key(self):
-        if gcd(np.linalg.det(self.K), MOD) == 1:
+        det_K = np.linalg.det(self.K)
+        if det_K != 0 and gcd(det_K, MOD) == 1:
             check = True
         else:
             check = False
@@ -167,13 +169,35 @@ class Classical(HillCipher):
             for row in block:
                 self.plaintext += CHARACTER[int(row[0])].lower()
 
-#example
-k = np.array([[2,3],[3,6]])
+#example improve
 k1 = np.array([[1,2,3],[3,5,5],[4,5,6]])
 k2 = np.array([[0,1,2],[3,4,0],[0,0,1]])
 size = 3
-plaintext = ""
-ciphertext = "73N"
-hill_cipher = Improve(k1,k2,size,plaintext,ciphertext)
-hill_cipher.decrypt()
-print(hill_cipher.plaintext)
+#encrypt improve
+plaintext1 = "huyne"
+ciphertext1 = ""
+encrypt_improve = Improve(k1,k2,size,plaintext1,ciphertext1)
+encrypt_improve.encrypt()
+print("Encrypt Improve: " + encrypt_improve.ciphertext)
+#decrypt improve 
+plaintext2 = ""
+ciphertext2 = "L0O1R4"
+decrypt_improve = Improve(k1,k2,size,plaintext2,ciphertext2)
+decrypt_improve.decrypt()
+print("Decrypt Improve: " + decrypt_improve.plaintext)
+
+#example classical
+k = np.array([[1,2,3],[3,5,5],[4,5,6]])
+size = 3
+#encrypt classical
+plaintext3 = "huyne"
+ciphertext3 = ""
+encrypt_classical = Classical(k,size,plaintext3,ciphertext3)
+encrypt_classical.encrypt()
+print("Encrypt Classical: " + encrypt_classical.ciphertext)
+#Decrypt classical
+plaintext4 = ""
+ciphertext4 = "ITNSR3"
+decrypt_classical = Classical(k,size,plaintext4,ciphertext4)
+decrypt_classical.decrypt()
+print("Decrypt Improve: " + decrypt_classical.plaintext)
