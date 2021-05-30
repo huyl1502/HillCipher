@@ -126,7 +126,7 @@ def Window1(n):
     '''Button(KeyMatrixFrame,text="Submit Keys", bg='#c0c0c0', width=15, command=lambda: getKeyMatrix()).place(x=48 ,y=350)'''
 
     #Button change Key size
-    Button(KeyMatrixFrame, text = "Change Key size",  bg='#c0c0c0', width=15, command=lambda: Window2(window1)). place(x = 48, y = 380)
+    Button(KeyMatrixFrame, text = "Change Key size",  bg='#c0c0c0', width=15, command=lambda: Window2(window1)). place(x = 25, y = 350)
 
 
     #------------------------------------------------
@@ -194,7 +194,7 @@ def Window1(n):
     #Window1 loops
     #------------------------------------------------
 
-    Button(window1,text="Result", bg='#c0c0c0', width=15, command=lambda: Encrypt_result(n)).place(x=300 ,y=400)
+    Button(window1,text="Result", bg='#c0c0c0', width=15, command=lambda: Encrypt_result(n)).place(x=320 ,y=400)
 
     window1.mainloop()
     return(window1)
