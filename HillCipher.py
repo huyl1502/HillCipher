@@ -34,7 +34,7 @@ class HillCipher:
         no_block = int(len(p_text) // self.size)
         for i in range(no_block):
             text_block = []
-            for j in range(size):
+            for j in range(self.size):
                 block_row = []
                 e = CHARACTER.index(p_text[i*self.size + j])
                 block_row.append(e)
@@ -184,7 +184,7 @@ class Classical(HillCipher):
 
         end = time.time()
         return end - start
-
+'''
 #example improve
 k1 = np.array([[1,2,3],[3,5,5],[4,5,6]])
 k2 = np.array([[0,1,2],[3,4,0],[0,0,1]])
@@ -217,4 +217,4 @@ plaintext4 = ""
 ciphertext4 = "ITNSR3"
 decrypt_classical = Classical(k,size,plaintext4,ciphertext4)
 time_decrypt_classical = decrypt_classical.decrypt()
-print("Decrypt Improve: " + decrypt_classical.plaintext)
+print("Decrypt Improve: " + decrypt_classical.plaintext)'''
